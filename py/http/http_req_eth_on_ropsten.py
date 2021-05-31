@@ -113,24 +113,24 @@ def sendToMyAddress(ethNodeUrl,destAddress,srcAddress,srcPrivateKey,gas=21000)->
         @srcPrivateKey 源地址私钥
         @gas 目前用常量21000,可以通过这个方法估算eth.estimate_gas({'to': ethToAddress, 'from':ethFromAddress, 'value': value})
     '''
-    w3 = Web3(Web3.HTTPProvider(ethNodeUrl))
-    print("w3.isConnected()=",w3.isConnected())
-    if not w3.isConnected():
-        return False
-
-    eth = w3.eth
-    ethToAddress = destAddress
-    ethFromAddress = srcAddress
-    valueLimit = Web3.toWei(3, 'ether') #3个ETH
-    print("获取接收地址的eth余额",eth.get_balance(destAddress))
-    srcBalance = eth.get_balance(srcAddress)
-    print("获取发送地址的eth余额",srcBalance)
-
-    if srcBalance < valueLimit:
-        print("乞讨地址上的数量不足=",srcBalance,"<",valueLimit)
-        return False
-
     try:
+        w3 = Web3(Web3.HTTPProvider(ethNodeUrl))
+        print("w3.isConnected()=",w3.isConnected())
+        if not w3.isConnected():
+            return False
+
+        eth = w3.eth
+        ethToAddress = destAddress
+        ethFromAddress = srcAddress
+        valueLimit = Web3.toWei(3, 'ether') #3个ETH
+        print("获取接收地址的eth余额",eth.get_balance(destAddress))
+        srcBalance = eth.get_balance(srcAddress)
+        print("获取发送地址的eth余额",srcBalance)
+
+        if srcBalance < valueLimit:
+            print("乞讨地址上的数量不足=",srcBalance,"<",valueLimit)
+            return False
+        
         nowGasPrice = eth.gas_price
         print("eth.gas_price=",nowGasPrice)
         # print("last gas=",block.gasUsed)
