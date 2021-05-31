@@ -50,19 +50,19 @@ def logSafeInThreads(log):
         print(log+"\n")
 
 def httpGet(testID,host,api,params,heads=None):
-    conn = http.client.HTTPConnection(host)
+    conn = http.client.HTTPConnection(host,timeout=60)
     getRequest(conn,testID,host,api,params,heads)
 
 def httpsGet(testID,host,api,params,heads=None):
-    conn = http.client.HTTPSConnection(host)
+    conn = http.client.HTTPSConnection(host,timeout=60)
     getRequest(conn,testID,host,api,params,heads)
 
 def httpPost(testID,host,api,params,body,heads=None):
-    conn = http.client.HTTPConnection(host)
+    conn = http.client.HTTPConnection(host,timeout=60)
     postRequest(conn,testID,host,api,params,heads,body)
 
 def httpsPost(testID,host,api,params,body,heads=None):
-    conn = http.client.HTTPSConnection(host)
+    conn = http.client.HTTPSConnection(host,timeout=60)
     postRequest(conn,testID,host,api,params,heads,body)
 
 def getRequest(conn,testID,host,api,params,heads):
