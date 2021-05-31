@@ -1,0 +1,103 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <!-- 生产环境版本，优化了尺寸和速度 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+    <div id="app">
+        <input v-model="msg" placeholder="请输入">
+        <p>{{msg}}</p>
+
+        <textarea v-model="msg1" placeholder="请输入2"></textarea>
+        <p>{{msg1}}</p>
+
+        <!-- 单个复选框 -->
+        <input type="checkbox" v-model="msg2">复选框
+        <p>{{msg2}}</p>
+
+        <!-- 多个复选框 value可以指定某个checkbox的值-->
+        <input type="checkbox" value="A" v-model="msg3">A
+        <input type="checkbox" value="B" v-model="msg3">B
+        <input type="checkbox" value="C" v-model="msg3">C
+        <input type="checkbox" value="A" v-model="msg3">A
+        <p>{{msg3}}</p>
+
+        <!-- 单选框 -->
+        <input type="radio" value="1" v-model="msg4">单选框1
+        <input type="radio" value="2" v-model="msg4">单选框2
+        <p>{{msg4}}</p>
+
+        <!-- combobox -->
+        <select v-model="msg5">
+            <option disabled value="">请选择</option>
+            <option>一</option>
+            <option>二</option>
+            <option>三</option>
+        </select>
+        <p>{{msg5}}</p>
+
+        <select v-model="msg6" multiple>
+            <option disabled value="">请选择</option>
+            <option>一一</option>
+            <option>二二</option>
+            <option>三三</option>
+        </select>
+        <p>{{msg6}}</p>
+        <!-- 动态渲染 -->
+        <select v-model="msg7">
+            <option v-for="(item, index) in opt7" :key="index" v-bind:value="item.value" v-bind:disabled="index==0">
+                {{item.text}}
+            </option>
+        </select>
+        <p>{{msg7}}</p>
+
+        <input type="checkbox" v-model="msg8" true-value="yes" false-value="no">更改默认true-value
+        <p>{{msg8}}</p>
+
+        <select v-model="msg9">
+            <!-- 内联对象字面量 -->
+            <option v-bind:value="{ number: 123 }">123</option>
+        </select>
+        <p>{{msg9}} {{typeof msg9}}</p>
+
+        <!-- 
+            修饰符
+             .lazy 内容更新的时候传到数据msg10 
+             .number 内容转成数字传到数据msg10    
+             .trim 内容头尾去空传到数据msg10 
+        -->
+        <input type="number" v-model.number="msg10">
+        <p>{{msg10}} {{typeof msg10}}</p>
+        <input v-model.trim="msg11">
+        <p>{{msg11}} {{typeof msg11}}</p>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                msg: "",
+                msg1: "",
+                msg2: false,
+                msg3: [],
+                msg4: "",
+                msg5: "",
+                msg6: [],//这里，select 默认传递的是数组，就算这里定义成字符串，选中某个选项的时候还是数组类型
+                msg7: "",
+                opt7: [{ value: 0, text: "A-" }, { value: 1, text: "A" }, { value: 2, text: "B" }],
+                msg8: true,
+                msg9: "",
+                msg10: "",
+                msg11: ""
+            }
+        });
+
+    </script>
+</body>
+
+</html>

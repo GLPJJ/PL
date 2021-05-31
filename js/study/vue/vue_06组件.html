@@ -1,0 +1,112 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <!-- 生产环境版本，优化了尺寸和速度 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+    <script>
+        //组件必须现在head里面注册，才能再使用，否则报错
+        //全局注册
+        Vue.component("btn_counter", {
+            //错误1
+            // data: {
+            //     count: 0
+            // },
+            data: function () {
+                //错误2
+                // return 0;
+                return {
+                    count: 0
+                };
+            },
+            /**
+            组件中data 必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝：
+            */
+            template: '<button v-on:click="count++">click {{count}}</button>'
+        });
+
+        // 模块化标题
+        Vue.component("blog_title", {
+            props: ["title"],
+            template: '<h1>{{title}}</h1>'
+        });
+
+        // 模块化组件多个内容
+        Vue.component("blog_post", {
+            props: ["post"],
+            template: `<div>
+                        <h1>{{post.title}}</h1>
+                        <button v-on:click="$emit('add',-0.1)">缩小字体</button>
+                        <!--向上发送事件，可以带一个参数，外面可通过$event访问这个参数-->
+                        <button v-on:click="$emit('add',0.1)">放大字体</button>
+                        <div v-html="post.content"></div>
+                      </div>`
+        });
+
+
+        // v-model的使用
+        // <input v-model="searchText"> 等价于：
+        // <input v-bind:value="searchText" v-on:input="searchText = $event.target.value"> 
+        // 实现自定义输入框
+        Vue.component("custom_input", {
+            props: ["value"],
+            template: `<input v-bind:value="value" v-on:input="$emit('input',$event.target.value)">`
+        });
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 组件复用 -->
+        <btn_counter></btn_counter>
+        <btn_counter></btn_counter>
+        <p>blog_title 1</p>
+        <blog_title title="123"></blog_title>
+        <blog_title title="456"></blog_title>
+        <p>blog_title 2</p>
+        <blog_title v-for="(item, index) in posts" v-bind:key="'posts0'+item.id" v-bind:title="item.title"></blog_title>
+        <p>blog_post</p>
+        <div :style="{fontSize:fS+'em'}">
+            <!-- 通过表达式 -->
+            <blog_post v-for="(item, index) in posts2" :key="'posts1'+item.id" v-bind:post="item" v-on:add="fS+=$event">
+            </blog_post>
+
+            <!-- 通过方法 -->
+            <blog_post v-for="(item, index) in posts2" :key="'posts2'+item.id" v-bind:post="item" v-on:add="addFontSize">
+            </blog_post>
+        </div>
+
+        <p>custom_input</p>
+        <custom_input v-model="msg1"></custom_input>
+        <p>{{msg1}}</p>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                posts: [
+                    { id: 101, title: "789" }, { id: 102, title: "0" }
+                ],
+                posts2: [
+                    { id: 1, title: "789", content: "内容1" }
+                ],
+                fS: 1,
+                msg1: ""
+            },
+            methods: {
+                addFontSize: function (add) {
+                    console.log("add =" + add);
+                    this.fS += add;
+                }
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

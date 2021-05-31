@@ -1,0 +1,13 @@
+# Netscape HTTP Cookie File
+# http://curl.haxx.se/rfc/cookie_spec.html
+# This is a generated file!  Do not edit.
+
+.taobao.com	TRUE	/	FALSE		_tb_token_	ee83770dbe7b3
+.taobao.com	TRUE	/	FALSE		cookie2	7211c68f339a38fb8d06e0f289cb9035
+.taobao.com	TRUE	/	FALSE	1562558242	t	eb1306cbe5fb65e9ff70bba8060c53d8
+.taobao.com	TRUE	/	FALSE		v	0
+.tmall.com	TRUE	/	FALSE		_tb_token_	ee83770dbe7b3
+.tmall.com	TRUE	/	FALSE		cookie2	7211c68f339a38fb8d06e0f289cb9035
+.tmall.com	TRUE	/	FALSE		t	eb1306cbe5fb65e9ff70bba8060c53d8
+login.taobao.com	FALSE	/	FALSE		XSRF-TOKEN	1158a00b-6982-4524-b28c-47c5d6f85982
+pass.tmall.com	FALSE	/	FALSE		XSRF-TOKEN	ac95631e-39e8-4a0a-b7cb-00ec378d92b5

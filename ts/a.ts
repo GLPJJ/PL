@@ -129,5 +129,5 @@ while (j < 10) {
     j++;
 }
 
-let obj1 = new UserMath();
+let objTs = new UserMath();
 

@@ -1,0 +1,147 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 生产环境版本，优化了尺寸和速度 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+    <script>
+        //注册vue组件
+        Vue.component('vue-todo-item', {
+            // todo-item 组件现在接受一个
+            // "prop"，类似于一个自定义特性。
+            // 这个 prop 名为 todo。
+            props: ['todo'],
+            template: '<li>{{todo.text}}</li>'
+        })
+    </script>
+</head>
+
+<body>
+    <!-- Do not mount Vue to <html> or <body> - mount to normal elements instead. -->
+    <div id="app">
+        {{ message }}
+    </div>
+
+    <!-- 提示信息 -->
+    <div id="app-2">
+        <span v-bind:title="message">鼠标悬停几秒钟查看此处动态绑定的提示信息！</span>
+    </div>
+
+    <!-- 可见性 -->
+    <div id="app-3">
+        <p v-if="visible">显示/隐藏</p>
+    </div>
+
+    <!-- 列表 -->
+    <div id="app-4">
+        <!-- 有序列表 ul无序列表 -->
+        <ol>
+            <li v-for="todo in todos">
+                {{todo,todo.content}} | {{todo.content}}
+            </li>
+        </ol>
+
+    </div>
+
+    <!-- 交互 -->
+    <div id="app-5">
+        <p>{{message}}</p>
+        <button v-on:click="clickMsg">翻转消息</button>
+    </div>
+
+    <!-- 输入框 -->
+    <div id="app-6">
+        <p>{{message}}</p>
+        <input v-model="message">
+        <!-- 绑定输入信息 -->
+    </div>
+
+    <!-- 组件应用，组件的子单元通过 prop 接口与父单元进行了良好的解耦 -->
+    <ol id="app-7">
+        <!-- 创建一个 vue-todo-item 的实例 -->
+        <!-- 绑定item到组件中的属性todo -->
+        <vue-todo-item v-for="item in missions" v-bind:todo="item" v-bind:key="item.id"></vue-todo-item>
+        <!--<vue-todo-item></vue-todo-item>
+        <vue-todo-item></vue-todo-item> -->
+        <!-- <li>这是个待办项</li> -->
+    </ol>
+
+    <!-- vue脚本必须放到元素声明的后面，否则会提示找不到element -->
+    <script>
+        //文字
+        var app = new Vue({
+            el: "#app",//指定我们的elementId 
+            data: {
+                message: "Hello 世界 from vue.js"
+            }
+        });
+        //可以在chrome开发者工具的console中输入命令，更新app.message的值，来查看页面也会保持一致的更新
+
+        //提示信息
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+                message: '页面加载于 ' + new Date().toLocaleString()
+            }
+        });
+
+        //控制可见性
+        var app3 = new Vue({
+            el: "#app-3",
+            data: {
+                visible: true
+            }
+        });
+
+        //展示数组内容
+        var app4 = new Vue({
+            el: "#app-4",
+            data: {
+                todos: [
+                    { content: "学习c" },
+                    { content: "学习c++" },
+                    { content: "学习java" },
+                    { content: "学习javascript" },
+                    { content: "学习vue" }
+                ]
+            }
+        });
+
+        //界面交互
+        var app5 = new Vue({
+            el: "#app-5",
+            data: {
+                message: "我是消息"
+            },
+            methods: {
+                clickMsg: function () {
+                    this.message = this.message.split('').reverse().join('')
+                }
+            }
+        });
+
+        var app6 = new Vue({
+            el: "#app-6",
+            data: {
+                message: "来自输入框"
+            }
+        });
+
+        var app7 = new Vue({
+            el: "#app-7",
+            data: {
+                missions: [
+                    { id: 101, text: "读书" },
+                    { id: 102, text: "写字" },
+                    { id: 103, text: "画画" }
+                ]
+            }
+        });
+    </script>
+
+</body>
+
+</html>

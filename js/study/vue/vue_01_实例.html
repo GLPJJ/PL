@@ -1,0 +1,85 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app-0">
+        {{a}},{b} 这里必须使用 '{{}}' 把值括起来
+    </div>
+
+    <script>
+        var data = { a: 0, b: "1" };
+
+        // Object.freeze(data);//冻结对象，这会阻止修改现有的属性，也意味着响应系统无法再追踪变化。
+
+        //创建的时候双向绑定响应
+        var app = new Vue({
+            el: "#app-0",
+            data: data,
+            beforeCreate() {
+                console.log('beforeCreate a is: ' + this.a);
+            },
+            created: function () {
+                // `this` 指向 app 实例
+                console.log('created a is: ' + this.a);
+            },
+            beforeMount: function () {
+                console.log('beforeMount a is: ' + this.a);
+            },
+            mounted: function () {
+                console.log('mounted a is: ' + this.a);
+            },
+            // keep-alive 组件激活时调用。
+            activated: function () {
+                console.log('activated a is: ' + this.a);
+            },
+            // keep-alive 组件停用时调用。
+            deactivated: function () {
+                console.log('deactivated a is: ' + this.a);
+            },
+            beforeUpdate: function () {
+                console.log('beforeUpdate a is: ' + this.a);
+            },
+            updated: function () {
+                console.log('updated a is: ' + this.a);
+            },
+            //app.$destroy() 调用才能触发
+            beforeDestroy: function () {
+                console.log('beforeDestroy a is: ' + this.a);
+            },
+            destroyed: function () {
+                console.log('destroyed a is: ' + this.a);
+            },
+            // 当捕获一个来自子孙组件的错误时被调用。此钩子会收到三个参数：错误对象、发生错误的组件实例以及一个包含错误来源信息的字符串。
+            // 此钩子可以返回 false 以阻止该错误继续向上传播。
+            errorCaptured: (err, vm, info) => {
+                console.log(err, vm, info);
+            },
+        });
+
+        console.log(app.a == data.a, data.a, typeof data.a, "isNaN =", isNaN(data.a));
+        console.log(app.b == data.b, data.b, typeof data.b);
+
+        //Vue提供以 $ 前缀的内部变量或方法
+        console.log("app.$data == data ", app.$data == data);
+        console.log("app.$el == document.getElementById('app-0') ", app.$el == document.getElementById("app-0"));
+        //Vue监听某个变量变化的回调
+        // 注意：在变异 (不是替换) 对象或数组时，旧值将与新值相同，因为它们的引用指向同一个对象/数组。Vue 不会保留变异之前值的副本。
+        // vm.$watch 返回一个取消观察函数，用来停止触发回调：
+        var app_a_unwatch = app.$watch("a", function (newValue, oldValue) {
+            console.log("change a from", oldValue, "to", newValue);
+        }, {
+                deep: true,//为了发现对象内部值的变化，可以在选项参数中指定 deep: true 。注意监听数组的变动不需要这么做。
+                immediate: true//在选项参数中指定 immediate: true 将立即以表达式的当前值触发回调：
+            }
+        );
+        // app_a_unwatch();//停止触发回调：
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,321 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <!-- 生产环境版本，优化了尺寸和速度 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+    <!-- 绑定类型 -->
+    <div id="app-0" v-bind:class="clsObj">
+    </div>
+
+    <!-- 绑定 HTML Class begin -->
+    <!-- 数组语法 绑定多个 -->
+    <div v-bind:class="[activeClass, errorClass]"></div>
+    <!-- 支持表达式 -->
+    <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
+    <!-- 支持混合 -->
+    <div v-bind:class="[{ active: isActive }, errorClass]"></div>
+    <!-- 绑定 HTML Class end -->
+
+    <!-- 绑定内联样式 begin -->
+    <div id="app-1" v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+    <!-- 数组语法 绑定多个 -->
+    <div v-bind:style="[baseStyles, overridingStyles]"></div>
+    <!-- 当 v-bind:style 使用需要添加浏览器引擎前缀的 CSS 属性时，如 transform，Vue.js 会自动侦测并添加相应的前缀。 -->
+
+    <!-- 从 2.3.0 起你可以为 style 绑定中的属性提供一个包含多个值的数组，常用于提供多个带前缀的值，例如： -->
+    <!-- 这样写只会渲染数组中最后一个被浏览器支持的值。在本例中，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 display: flex。 -->
+    <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+    <!-- 这里使用了 v-bind:缩写 -->
+    <!-- 绑定内联样式 end -->
+
+    <!-- Vue控制html结点渲染 -->
+    <div id="app-2">
+        <p>当前成绩: {{score}}</p>
+        <p v-if="score>=90">A</p>
+        <p v-else-if="score>=80">B</p>
+        <p v-else-if="score>=60">C</p>
+        <p v-else>E</p>
+
+        <template v-if="type == 1">
+            <label>Phone Number</label>
+            <!-- 那么在上面的代码中切换 type 将不会清除用户已经输入的内容。
+                因为两个模板使用了相同的元素，<input> 不会被替换掉——仅仅是替换了它的 placeholder。 -->
+            <input type="text" placeholder="phone number">
+            <!-- Vue 为你提供了一种方式来表达“这两个元素是完全独立的，不要复用它们”。只需添加一个具有唯一值的 key 属性即可 -->
+            <input type="text" placeholder="phone number 2" key="phone">
+        </template>
+        <template v-else>
+            <label>Email</label>
+            <input type="text" placeholder="email">
+            <input type="text" placeholder="email 2" key="email">
+        </template>
+
+        <!-- 注意，v-show 不支持 <template> 元素，也不支持 v-else -->
+        <!-- v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
+        v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
+        相比之下，v-show 就简单得多——不管初始条件是什么，元素总是会被渲染，并且只是简单地基于 CSS 进行切换。
+        一般来说，v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。
+        因此，如果需要非常频繁地切换，则使用 v-show 较好；如果在运行时条件很少改变，则使用 v-if 较好。 -->
+        <p v-show="show">v-show显示</p>
+
+        <!-- 当 v-if 与 v-for 一起使用时，v-for 具有比 v-if 更高的优先级 -->
+
+        <ul>
+            <!-- 在 v-for 块中，我们拥有对父作用域属性的完全访问权限 -->
+            <li v-for="(item, index) in letters">{{parentMsg}},{{index}},{{item.letter}}</li>
+
+            <p>使用of:</p>
+
+            <!-- 你也可以用 of 替代 in 作为分隔符，因为它是最接近 JavaScript 迭代器的语法： -->
+            <li v-for="(item, index) of letters">{{parentMsg}};{{index}};{{item.letter}}</li>
+        </ul>
+
+        <!-- v-for 通过一个对象的属性来迭代 -->
+        <div v-for="(value, key, index) in student">
+            {{ index }}. {{ key }}: {{ value }}
+        </div>
+        <!-- 在遍历对象时，是按 Object.keys() 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下是一致的。 -->
+
+        <!-- 使用key，以便Vue能跟踪每个节点的身份，从而重用和重新排序现有元素 -->
+        <!-- <div v-for="item in items" :key="item.id">
+            内容
+        </div> -->
+
+        <!-- Vue 包含一组观察数组的变异方法，所以它们也将会触发视图更新。这些方法如下： 
+            push() pop() shift() unshift() splice() sort() reverse() 
+
+            变异方法 (mutation method)，顾名思义，会改变被这些方法调用的原始数组。
+            相比之下，也有非变异 (non-mutating method) 方法，例如：filter(), concat() 和 slice() 。
+            这些不会改变原始数组，但总是返回一个新数组。当使用非变异方法时，可以用新数组替换旧数组
+                vm.arr = vm.arr.xxx()
+
+            由于 JavaScript 的限制，Vue 不能检测以下变动的数组：
+                 当你利用索引直接设置一个项时，例如：vm.items[indexOfItem] = newValue 
+                 当你修改数组的长度时，例如：vm.items.length = newLength
+
+                 建议使用splice解决上面两个问题:
+                 vm.items.splice(indexOfItem,1,newValue);
+                 vm.items.splice(newLength);
+
+                 设置也可以走Vue提供的set函数
+                 Vue.set(vm.items, indexOfItem, newValue)
+                 vm.$set(vm.items, indexOfItem, newValue)
+
+            还是由于 JavaScript 的限制，Vue 不能检测对象属性的添加或删除
+                单个属性的添加建议使用：
+                Vue.set(object, key, value) 或者 vm.$set(object,key,value)
+                多个属性的添加建议使用Object.assign:
+                vm.object = Object.assign({},vm.object,{x:"",y:""})
+        -->
+
+        <ol>
+            <p>来自computed</p>
+            <li v-for="(item, index) in evenNum">{{item}},{{index}}</li>
+            <p>来自methods</p>
+            <li v-for="(item, index) in even(numbers)">{{item}},{{index}}</li>
+        </ol>
+
+        <!-- 事件的监听 -->
+        <p>{{cnt}}
+            <button v-on:click="cnt++">增加计数</button>
+        </p>
+        <button v-on:click="clickGreet">问候一下</button>
+        <button v-on:click="clickGreet()">问候一下(调用带括号)</button>
+        <button v-on:click="clickGreet($event)">问候一下(调用带括号)</button>
+
+        <br>
+        <button v-on:click="clickSay('Jack')">Jack</button>
+        <button v-on:click="clickSay('Tom',$event)">Tom</button>
+
+        <br>
+        <!-- 事件修饰符 -->
+        <!-- 阻止单击事件继续传播 -->
+        <a v-on:click.stop="clickMsg('doThis')">阻止单击事件继续传播</a>
+
+        <!-- 提交事件不再重载页面 -->
+        <form v-on:submit.prevent="clickMsg('onSubmit')">提交事件不再重载页面</form>
+
+        <!-- 修饰符可以串联 -->
+        <a v-on:click.stop.prevent="clickMsg('doThat')">修饰符可以串联</a>
+
+        <!-- 只有修饰符 -->
+        <form v-on:submit.prevent>只有修饰符</form>
+
+        <!-- 添加事件监听器时使用事件捕获模式 -->
+        <!-- 即元素自身触发的事件先在此处处理，然后才交由内部元素进行处理 -->
+        <div v-on:click.capture="clickMsg('doThis')">使用事件捕获模式</div>
+
+        <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+        <!-- 即事件不是从内部元素触发的 -->
+        <div v-on:click.self="clickMsg('doThat')">当前元素自身时触发处理函数</div>
+
+        <!-- 使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生。
+            因此，用 v-on:click.prevent.self 会阻止所有的点击，
+            而 v-on:click.self.prevent 只会阻止对元素自身的点击。 -->
+
+        <!-- 点击事件将只会触发一次 -->
+        <a v-on:click.once="clickMsg('一次')">点击事件将只会触发一次</a>
+
+        <!-- 滚动事件的默认行为 (即滚动行为) 将会立即触发 -->
+        <!-- 而不会等待 `onScroll` 完成  -->
+        <!-- 这其中包含 `event.preventDefault()` 的情况 -->
+        <div v-on:scroll.passive="clickMsg('onScroll')">滚动事件的默认行为 (即滚动行为) 将会立即触发 </div>
+        <!-- 不要把 .passive 和 .prevent 一起使用，因为 .prevent 将会被忽略，同时浏览器可能会向你展示一个警告。
+            请记住，.passive 会告诉浏览器你不想阻止事件的默认行为。 -->
+
+        <!-- 按键修饰符 -->
+        <!-- 全部的按键别名：
+            键盘：
+            .enter
+            .tab
+            .delete (捕获“删除”和“退格”键)
+            .esc
+            .space
+            .up
+            .down
+            .left
+            .right
+
+            .ctrl
+            .alt
+            .shift
+            .meta 在 Mac 系统键盘上，meta 对应 command 键 (⌘)。在 Windows 系统键盘 meta 对应 Windows 徽标键 (⊞)
+
+            .exact 
+            修饰符允许你控制由精确的系统修饰符组合触发的事件。
+            即使 Alt 或 Shift 被一同按下时也会触发
+            <button @click.ctrl="onClick">A</button>
+            有且只有 Ctrl 被按下的时候才触发
+            <button @click.ctrl.exact="onCtrlClick">A</button>
+            没有任何系统修饰符被按下的时候才触发
+            <button @click.exact="onClick">A</button>
+            对象语法 (2.4.0+)
+            <button v-on="{ mousedown: doThis, mouseup: doThat }"></button>
+
+            鼠标：
+            .left
+            .right
+            .middle
+        -->
+        <input type="text" v-on:keyup.enter="clickMsg('key')">
+
+        <!-- Alt + C -->
+        <input @keyup.alt.67="clear">
+        <!-- 请注意修饰键与常规按键不同，在和 keyup 事件一起用时，事件触发时修饰键必须处于按下状态。
+            换句话说，只有在按住 ctrl 的情况下释放其它按键，才能触发 keyup.ctrl。而单单释放 ctrl 也不会触发事件。
+            如果你想要这样的行为，请为 ctrl 换用 keyCode：keyup.17。 -->
+
+        <input style="width:100px;height:100px;background-color:red;" placeholder="键盘测试" v-on:keydown="commonMsg" />
+        <div style="width:100px;height:100px;color:red;background-color: green" v-on="{
+            mousedown:commonMsg,mousemove:commonMsg,mouseover:commonMsg,mouseout:commonMsg,mouseup:commonMsg}">鼠标测试</div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app-0",
+
+
+            // data: {
+            //     clsObj: {
+            //         active: true,
+            //         'text-danger': false
+            //     }
+            // }
+
+            // 相对于上面的提供的绑定style方法，下面的效率更加高一些
+            data: {
+                isActive: true,
+                err: null,
+            },
+            computed: {
+                clsObj: function () {
+                    return {
+                        active: this.isActive && !this.err,
+                        'text-danger': this.err && this.err.type === 'fatal'
+                    }
+                }
+            }
+        });
+
+        var app1 = new Vue({
+            el: "#app-1",
+            data: {
+                activeColor: "#ff0000",
+                fontSize: 28
+            }
+
+            // 同样的，对象语法常常结合返回对象的计算属性使用。就像上面的例子那样。@作业：尝试自己写一下
+        });
+
+        var app2 = new Vue({
+            el: "#app-2",
+            data: {
+                score: 90,
+                type: 1,
+                show: true,
+
+                parentMsg: "letter From Vue",
+                letters: [
+                    { letter: "A" },
+                    { letter: "B" },
+                    { letter: "C" },
+                    { letter: "D" },
+                ],
+                //控制台测试
+                // app2.letters.push({letter:"E"})
+                // app2.letters.pop()
+                // app2.letters.shift()
+                // app2.letters.reverse()
+                // app2.letters.splice(1,1,{letter:"z"})
+                student: {
+                    name: "Jack",
+                    sex: "0",//0男 1女 2未知
+                    score: 60
+                },
+                //控制台测试
+                // app2.student = Object.assign({},app2.student,{id:0})
+
+                numbers: [
+                    11, 22, 33, 44, 55, 66
+                ],
+
+                cnt: 0
+            },
+            computed: {
+                evenNum: function () {//获取偶数
+                    return this.numbers.filter(function (num) {
+                        return num % 2 == 0;
+                    });
+                }
+            },
+            methods: {
+                even: function (nums) {
+                    return nums.filter(function (num) {
+                        return num % 2 == 0;
+                    })
+                },
+                clickGreet: function (event) {
+                    console.log(event);
+                    alert("Hello I'm from Vue click");
+                },
+                clickSay: function (name, event) {
+                    console.log(name, event);
+                    alert("Hello " + name + "~! I'm from Vue click");
+                },
+                clickMsg: function (msg, event) {
+                    console.log(msg, event);
+                },
+                commonMsg: function (event) {
+                    console.log("commonMsg", event);
+                },
+            }
+        });
+    </script>
+</body>
+
+</html>
