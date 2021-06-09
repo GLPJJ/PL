@@ -204,6 +204,7 @@ if __name__ == '__main__':
                 time.sleep(2.1)
 
             #请求5次之后查看一下地址上的数量,收集一下。
+            time.sleep(5)
             if ethDataPre:
                 sendToMyAddress(myEthInfuraUrl,myEthDestAddress,ethDataPre['address'],ethDataPre['private_key'])
             ethDataPre = ethData
