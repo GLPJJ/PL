@@ -189,7 +189,7 @@ if __name__ == '__main__':
         cnt += 1
         if cnt >= 50:
             print("sleep...")
-            time.sleep(600.1) #休息10.1秒
+            time.sleep(300.1) #休息10.1秒
             cnt = 0
         httpsPost(threadID,"faucet.metamask.io","/v0/request",{},
                 address,{"content-type": "application/rawdata"})
