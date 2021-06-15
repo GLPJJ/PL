@@ -189,7 +189,7 @@ if __name__ == '__main__':
         cnt += 1
         if cnt >= 50:
             print("sleep...")
-            time.sleep(300.1) #休息10.1秒
+            time.sleep(600.1) #休息10.1秒
             cnt = 0
         httpsPost(threadID,"faucet.metamask.io","/v0/request",{},
                 address,{"content-type": "application/rawdata"})
@@ -201,7 +201,7 @@ if __name__ == '__main__':
             ethData = myEthDatas[i]
             for j in range(5):
                 do(i,ethData['address'])
-                time.sleep(2.1)
+                # time.sleep(2.1)
 
             #请求5次之后查看一下地址上的数量,收集一下。
             time.sleep(5)
