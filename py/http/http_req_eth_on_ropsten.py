@@ -22,7 +22,7 @@ from pathlib import (
 #pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 # pip install web3
 
-
+GLOBAL_TIMEOUT = None #60
 GLOBAL_LOCK = threading.RLock()  # 折返锁，同一线程可锁定多次
 GLOBAL_HEADS = {"Content-type": "application/x-www-form-urlencoded", 
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8", 
@@ -50,19 +50,19 @@ def logSafeInThreads(log):
         print(log+"\n")
 
 def httpGet(testID,host,api,params,heads=None):
-    conn = http.client.HTTPConnection(host,timeout=60)
+    conn = http.client.HTTPConnection(host,timeout=GLOBAL_TIMEOUT)
     getRequest(conn,testID,host,api,params,heads)
 
 def httpsGet(testID,host,api,params,heads=None):
-    conn = http.client.HTTPSConnection(host,timeout=60)
+    conn = http.client.HTTPSConnection(host,timeout=GLOBAL_TIMEOUT)
     getRequest(conn,testID,host,api,params,heads)
 
 def httpPost(testID,host,api,params,body,heads=None):
-    conn = http.client.HTTPConnection(host,timeout=60)
+    conn = http.client.HTTPConnection(host,timeout=GLOBAL_TIMEOUT)
     postRequest(conn,testID,host,api,params,heads,body)
 
 def httpsPost(testID,host,api,params,body,heads=None):
-    conn = http.client.HTTPSConnection(host,timeout=60)
+    conn = http.client.HTTPSConnection(host,timeout=GLOBAL_TIMEOUT)
     postRequest(conn,testID,host,api,params,heads,body)
 
 def getRequest(conn,testID,host,api,params,heads):
