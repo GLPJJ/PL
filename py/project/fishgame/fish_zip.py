@@ -69,7 +69,7 @@ def fish_zip_test():
 if __name__ == '__main__':
     #@注意：win32直接双击执行即可，如果用cmd需要cd到对应的目录
 
-    # print(os.path.join("a","b"))
+    # print(os.path.join("a","bc"))
     # fish_zip_test()
     fish_zip_main(True,"D:/Github/fishing_server/skynet_lailai/")
 
