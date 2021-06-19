@@ -31,24 +31,6 @@ import time
 # 		callback = key.data
 # 		callback(key.fileobj, mask)
 
-
-def test():
-    try:
-        sock = socket.socket()
-        # sock.setblocking(False)
-        # sel.register(sock, selectors.EVENT_READ, accept)
-        print("connect..")
-        sock.connect(("121.196.203.52",9870))
-        print("send..")
-        sock.send(b"ls\n")
-        print("sleep..")
-        time.sleep(0.01)
-        print("close..")
-        sock.close()
-    except Exception as e:
-        print(e)
-    
-
 def main():
     HOST = 'localhost'    # The remote host
     PORT = 1234              # The same port as used by the server
@@ -83,7 +65,4 @@ def main():
 
     
 if __name__ == '__main__':
-    # main()
-    for i in range(200000):
-        print(i)
-        test()
+    main()
