@@ -565,7 +565,7 @@ if __name__ == '__main__':
                     "name":"/opt/fish/skynet/skynet",
                     "cmd":"/opt/fish/sh-center.sh",
                     "cpu":300,
-                    "cpuLow":5
+                    "cpuLow":0
                 },
                 {
                     "name":"/opt/auth/auth",
