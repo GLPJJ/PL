@@ -127,5 +127,7 @@ print("1"+2)
 
 
 --字符串数字转换
-print("字符串->数字",type(tonumber("1")))
-print("数字->字符串",type(tostring(1)))
+print("字符串->数字",tonumber("1"))
+print("字符串->数字",tonumber("a",16))
+print("数字->字符串",tostring(1))
+print("数字->字符串",string.format("%x",10))

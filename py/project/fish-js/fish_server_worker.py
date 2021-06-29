@@ -558,6 +558,17 @@ if __name__ == '__main__':
     else:  # 正式服
         IsProduction = True
         processes = [
+                {#优先启动数据库和redis
+                   "name":"/opt/soft/mysql/bin/mysqld", 
+                   "cmd":"/opt/py/start-db.sh",
+                   "cpu":90
+                },
+                {
+                    #/opt/soft/redis-5.0.3/src/redis-server
+                    "name":"/opt/soft/redis-5.0.3/src/redis-server",
+                    "cmd":"/opt/soft/redis-5.0.3/start.sh",
+                    "cpu":90
+                },
                 {
                     "name":"/opt/fish/skynet/skynet",
                     "cmd":"/opt/fish/sh-center.sh",
@@ -588,17 +599,6 @@ if __name__ == '__main__':
                     "name":"/opt/ftp/ftp",
                     "cmd":"/opt/ftp/start.sh",
                     "cpu":300
-                },
-                {
-                    #/opt/soft/redis-5.0.3/src/redis-server
-                    "name":"/opt/soft/redis-5.0.3/src/redis-server",
-                    "cmd":"/opt/soft/redis-5.0.3/start.sh",
-                    "cpu":90
-                },
-                {
-                   "name":"/opt/soft/mysql/bin/mysqld", 
-                   "cmd":"/opt/py/start-db.sh",
-                   "cpu":90
                 }
             ]
         mysql = ["127.0.0.1", "root", mySqlPwd1, "buyu", 0.8]
