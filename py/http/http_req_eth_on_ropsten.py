@@ -22,7 +22,7 @@ from pathlib import (
 #pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 # pip install web3
 
-GLOBAL_TIMEOUT = None #60
+GLOBAL_TIMEOUT = 60 #60
 GLOBAL_LOCK = threading.RLock()  # 折返锁，同一线程可锁定多次
 GLOBAL_HEADS = {"Content-type": "application/x-www-form-urlencoded", 
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8", 
@@ -201,7 +201,7 @@ if __name__ == '__main__':
             ethData = myEthDatas[i]
             for j in range(5):
                 do(i,ethData['address'])
-                # time.sleep(2.1)
+                time.sleep(2.1)
 
             #请求5次之后查看一下地址上的数量,收集一下。
             time.sleep(5)

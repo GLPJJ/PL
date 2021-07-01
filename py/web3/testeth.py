@@ -36,6 +36,7 @@ from web3 import Web3
 from pathlib import (
     Path,
 )
+from eth_account.messages import encode_defunct, _hash_eip191_message
 
 def testEth()->bool:
     print("test eth")
@@ -105,9 +106,46 @@ def testEth()->bool:
         return False
     return True
 
+def testSign():
+    recipient = '0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c'
+    amount = 5000000000000000000
+    nonce = 3
+    contractAddress = '0xd9145CCE52D386f254917e481eB44e9943F39138'
+
+    # solidityKeccak 替代 soliditySha3
+    text = Web3.solidityKeccak(
+        ["address", "uint256", "uint256", "address"],
+        [recipient, amount, nonce, contractAddress])
+    # print(dir(text))
+    print("text=",text)
+    hashText = text.hex();
+    # hashText = '0x49e299a55346'
+    print("hashText=",hashText) #这里得到的hash去 remix IDE签名
+    print("IDE sign=","\n")
+
+    #签名消息
+    # message = encode_defunct(text="i love you") #文本消息
+    #签名 0xdf710b43b3b1efa74f76242507cce72a525d5dd5b671bafeb7cbf5eb7ffee54a5869df3ca60425ebcb1cb062d764ddcf7a508edf8fe5015c75badff3000c34d41c
+    # message = encode_defunct(hexstr='0x287ae3b94a38199b853986aff3ca93bc3f46f2fd683e2c00bb43cc9b58a46739')
+    #签名 0xaf7e556400e57d9416f01dfd57c435548d959aa6b4faa74cd015be0fa28daecb7ec6ddd76083d305746b72b972b4f8f87eb401d63031a3cf932e7002c0699c3f1b
+    
+    message = encode_defunct(hexstr=hashText) #hex消息
+    print("message=",message)
+    
+    # w3 = Web3(Web3.HTTPProvider('https://ropsten.infura.io/v3/4f41b9c0250244df9d7e3aae137bb160'))
+    # print(w3.isConnected())
+    # if not w3.isConnected():
+    #     return False
+
+    # privateKey = '4291e16a6424ce5c7047ec559f49c90fbf1ebc425be71b9dead15467f0919a23'
+    # sign = w3.eth.account.sign_message(message, private_key=privateKey)
+    # print("sign=",sign)
+    # # print(dir(sign.signature))
+    # print("sign.signature=",sign.signature.hex())
 
 if __name__ == '__main__':
-    testEth()
+    # testEth()
+    testSign()
     # 4.999979 000000000000
     #       21 000 000000000
     # 100000 * 21000
