@@ -1332,7 +1332,7 @@ if __name__ == '__main__':
     # 解析所有的node节点，转化成js函数
 
     USERIMAGEPLIST = False
-    CURGAMERESDIR = "D:/work/Github/Fish/res1"
+    CURGAMERESDIR = "D:/Github/Fish/res1"
     # # 大厅
     AutoParseJsonDir(CURGAMERESDIR+"/scene_ext_ignore/vip","AutoUiForMain")
     # JsonWalk("D:/work/Github/Fish/res1/scene_ext_ignore/vip","Node_GMJB.json")
